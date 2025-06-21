@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Asistente Virtual Educativo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <!-- Hero Section -->
+        <div class="text-center mb-5">
+            <div class="mb-4">
+                <i class="fas fa-robot text-gradient" style="font-size: 4rem;"></i>
+            </div>
+            <h1 class="display-4 fw-bold text-gradient mb-4">
+                Bienvenido a EduBot IA
+            </h1>
+            <p class="lead text-muted mb-4">
+                Tu asistente virtual educativo impulsado por inteligencia artificial. 
+                Diseñado para ayudar a estudiantes de nivel secundario con consultas académicas 
+                en lenguaje natural.
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="{{ url_for('chat') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-comments me-2"></i>
+                    Comenzar Chat
+                </a>
+                <a href="{{ url_for('knowledge_view') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-book me-2"></i>
+                    Explorar Conocimiento
+                </a>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-brain text-primary" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Inteligencia Artificial</h5>
+                        <p class="card-text text-muted">
+                            Procesamiento de lenguaje natural avanzado para entender 
+                            tus preguntas y proporcionar respuestas precisas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-graduation-cap text-success" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Múltiples Materias</h5>
+                        <p class="card-text text-muted">
+                            Cobertura completa de matemáticas, física, química, biología, 
+                            historia, geografía y lengua.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-chart-line text-warning" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Seguimiento de Progreso</h5>
+                        <p class="card-text text-muted">
+                            Analíticas detalladas de tu aprendizaje y sugerencias 
+                            personalizadas para mejorar.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subjects Section -->
+        <div class="card mb-5">
+            <div class="card-header">
+                <h3 class="mb-0">
+                    <i class="fas fa-book-open me-2"></i>
+                    Materias Disponibles
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                            <i class="fas fa-calculator text-primary me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Matemáticas</h6>
+                                <small class="text-muted">Álgebra, Geometría, Cálculo</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                            <i class="fas fa-atom text-success me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Física</h6>
+                                <small class="text-muted">Mecánica, Energía, Ondas</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                            <i class="fas fa-flask text-warning me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Química</h6>
+                                <small class="text-muted">Elementos, Enlaces, Reacciones</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                            <i class="fas fa-dna text-info me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Biología</h6>
+                                <small class="text-muted">Células, Genética, Ecosistemas</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                            <i class="fas fa-landmark text-danger me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Historia</h6>
+                                <small class="text-muted">Civilizaciones, Revoluciones</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                            <i class="fas fa-globe text-primary me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Geografía</h6>
+                                <small class="text-muted">Coordenadas, Relieve, Clima</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                            <i class="fas fa-pen-fancy text-secondary me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Lengua</h6>
+                                <small class="text-muted">Gramática, Sintaxis, Literatura</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                            <i class="fas fa-question-circle text-muted me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <h6 class="mb-1 fw-bold">General</h6>
+                                <small class="text-muted">Consultas interdisciplinarias</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How it Works Section -->
+        <div class="card mb-5">
+            <div class="card-header">
+                <h3 class="mb-0">
+                    <i class="fas fa-cogs me-2"></i>
+                    ¿Cómo Funciona?
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-md-4 text-center">
+                        <div class="mb-3">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                1
+                            </div>
+                        </div>
+                        <h5 class="fw-bold">Haz tu Pregunta</h5>
+                        <p class="text-muted">
+                            Escribe tu consulta académica en lenguaje natural, 
+                            como si le preguntaras a un profesor.
+                        </p>
+                    </div>
+                    
+                    <div class="col-md-4 text-center">
+                        <div class="mb-3">
+                            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                2
+                            </div>
+                        </div>
+                        <h5 class="fw-bold">Procesamiento IA</h5>
+                        <p class="text-muted">
+                            Nuestro sistema analiza tu pregunta, identifica la materia 
+                            y busca la información más relevante.
+                        </p>
+                    </div>
+                    
+                    <div class="col-md-4 text-center">
+                        <div class="mb-3">
+                            <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                3
+                            </div>
+                        </div>
+                        <h5 class="fw-bold">Recibe Respuesta</h5>
+                        <p class="text-muted">
+                            Obtén una respuesta detallada con explicaciones, 
+                            ejemplos y recursos adicionales.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center">
+            <div class="card bg-gradient" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+                <div class="card-body text-white p-5">
+                    <h3 class="fw-bold mb-3">¿Listo para Aprender?</h3>
+                    <p class="lead mb-4">
+                        Comienza a hacer preguntas y descubre cómo la inteligencia artificial 
+                        puede potenciar tu aprendizaje.
+                    </p>
+                    <a href="{{ url_for('chat') }}" class="btn btn-light btn-lg">
+                        <i class="fas fa-rocket me-2"></i>
+                        Empezar Ahora
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

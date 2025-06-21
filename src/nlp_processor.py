@@ -36,8 +36,7 @@ class NLPProcessor:
         try:
             self.nlp = spacy.load("es_core_news_sm")
         except OSError:
-            # Si no está instalado el modelo en español, usar uno básico
-            print("Modelo de español no encontrado. Usando modelo básico.")
+            print("Modelo de español no encontrado. Usando procesamiento básico.")
             self.nlp = None
     
     def setup_sentence_transformer(self):
@@ -55,37 +54,38 @@ class NLPProcessor:
                 'ecuacion', 'algebra', 'geometria', 'calculo', 'trigonometria',
                 'derivada', 'integral', 'funcion', 'grafica', 'numero', 'suma',
                 'resta', 'multiplicacion', 'division', 'fraccion', 'decimal',
-                'porcentaje', 'probabilidad', 'estadistica'
+                'porcentaje', 'probabilidad', 'estadistica', 'pitagoras',
+                'cuadratica', 'lineal', 'parabola', 'vertice'
             ],
             'fisica': [
                 'fuerza', 'energia', 'movimiento', 'velocidad', 'aceleracion',
                 'masa', 'peso', 'gravedad', 'presion', 'temperatura', 'calor',
                 'luz', 'sonido', 'electricidad', 'magnetismo', 'onda', 'atomo',
-                'molecula', 'newton', 'joule', 'watt'
+                'molecula', 'newton', 'joule', 'watt', 'cinetica', 'potencial'
             ],
             'quimica': [
                 'elemento', 'compuesto', 'molecula', 'atomo', 'ion', 'enlace',
                 'reaccion', 'acido', 'base', 'sal', 'ph', 'oxidacion', 'reduccion',
                 'tabla periodica', 'electron', 'proton', 'neutron', 'valencia',
-                'formula', 'ecuacion quimica'
+                'formula', 'ecuacion quimica', 'ionico', 'covalente'
             ],
             'biologia': [
                 'celula', 'organismo', 'tejido', 'organo', 'sistema', 'adn',
                 'gen', 'cromosoma', 'evolucion', 'ecosistema', 'biodiversidad',
                 'fotosintesis', 'respiracion', 'digestion', 'circulacion',
-                'reproduccion', 'herencia', 'mutacion', 'especie'
+                'reproduccion', 'herencia', 'mutacion', 'especie', 'clorofila'
             ],
             'historia': [
                 'epoca', 'siglo', 'guerra', 'revolucion', 'imperio', 'dinastia',
                 'civilizacion', 'cultura', 'sociedad', 'politica', 'economia',
                 'arte', 'religion', 'filosofia', 'descubrimiento', 'conquista',
-                'independencia', 'democracia', 'dictadura'
+                'independencia', 'democracia', 'dictadura', 'colonial'
             ],
             'geografia': [
                 'continente', 'pais', 'ciudad', 'rio', 'montana', 'oceano',
                 'clima', 'relieve', 'poblacion', 'capital', 'frontera',
                 'latitud', 'longitud', 'meridiano', 'paralelo', 'mapa',
-                'escala', 'proyeccion', 'coordenadas'
+                'escala', 'proyeccion', 'coordenadas', 'territorio'
             ],
             'lengua': [
                 'gramatica', 'sintaxis', 'morfologia', 'semantica', 'fonologia',
@@ -162,52 +162,60 @@ class NLPProcessor:
         entities = []
         
         if self.nlp:
-            doc = self.nlp(text)
-            for ent in doc.ents:
-                entities.append({
-                    'text': ent.text,
-                    'label': ent.label_,
-                    'start': ent.start_char,
-                    'end': ent.end_char
-                })
+            try:
+                doc = self.nlp(text)
+                for ent in doc.ents:
+                    entities.append({
+                        'text': ent.text,
+                        'label': ent.label_,
+                        'start': ent.start_char,
+                        'end': ent.end_char
+                    })
+            except Exception as e:
+                print(f"Error extrayendo entidades: {e}")
         
         return entities
     
     def extract_keywords(self, text: str) -> List[str]:
         """Extraer palabras clave importantes"""
-        # Usar NLTK para tokenización y POS tagging
-        from nltk.tokenize import word_tokenize
-        from nltk.corpus import stopwords
-        from nltk.tag import pos_tag
-        
         try:
-            stop_words = set(stopwords.words('spanish'))
-        except:
-            stop_words = set()
-        
-        tokens = word_tokenize(text)
-        
-        # Filtrar stopwords y obtener solo sustantivos, adjetivos y verbos
-        keywords = []
-        pos_tags = pos_tag(tokens)
-        
-        for word, pos in pos_tags:
-            if (len(word) > 2 and 
-                word not in stop_words and 
-                pos in ['NN', 'NNS', 'NNP', 'NNPS', 'JJ', 'JJR', 'JJS', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']):
-                keywords.append(word)
-        
-        return keywords[:10]  # Retornar top 10 keywords
+            from nltk.tokenize import word_tokenize
+            from nltk.corpus import stopwords
+            from nltk.tag import pos_tag
+            
+            try:
+                stop_words = set(stopwords.words('spanish'))
+            except:
+                stop_words = set(['el', 'la', 'de', 'que', 'y', 'a', 'en', 'un', 'es', 'se', 'no', 'te', 'lo', 'le', 'da', 'su', 'por', 'son', 'con', 'para', 'al', 'del', 'los', 'las'])
+            
+            tokens = word_tokenize(text)
+            
+            # Filtrar stopwords y obtener palabras importantes
+            keywords = []
+            pos_tags = pos_tag(tokens)
+            
+            for word, pos in pos_tags:
+                if (len(word) > 2 and 
+                    word not in stop_words and 
+                    word.isalpha()):
+                    keywords.append(word)
+            
+            return keywords[:10]  # Retornar top 10 keywords
+            
+        except Exception as e:
+            # Fallback simple
+            words = text.split()
+            return [word for word in words if len(word) > 3][:10]
     
     def classify_question_type(self, text: str) -> str:
         """Clasificar tipo de pregunta"""
         question_patterns = {
-            'definition': [r'que es', r'define', r'definicion', r'significa'],
-            'explanation': [r'como', r'por que', r'explica', r'porque'],
-            'calculation': [r'calcula', r'resuelve', r'resultado', r'cuanto'],
-            'comparison': [r'diferencia', r'compara', r'versus', r'mejor'],
-            'example': [r'ejemplo', r'casos', r'muestra'],
-            'procedure': [r'pasos', r'proceso', r'metodo', r'procedimiento']
+            'definition': [r'que es', r'define', r'definicion', r'significa', r'concepto'],
+            'explanation': [r'como', r'por que', r'explica', r'porque', r'como funciona'],
+            'calculation': [r'calcula', r'resuelve', r'resultado', r'cuanto', r'resolver'],
+            'comparison': [r'diferencia', r'compara', r'versus', r'mejor', r'entre'],
+            'example': [r'ejemplo', r'casos', r'muestra', r'ejemplos'],
+            'procedure': [r'pasos', r'proceso', r'metodo', r'procedimiento', r'como hacer']
         }
         
         for question_type, patterns in question_patterns.items():
@@ -239,8 +247,8 @@ class NLPProcessor:
                 print(f"Error calculando similitud: {e}")
         
         # Fallback usando TF-IDF
-        vectorizer = TfidfVectorizer()
         try:
+            vectorizer = TfidfVectorizer()
             tfidf_matrix = vectorizer.fit_transform([text1, text2])
             similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0]
             return float(similarity)

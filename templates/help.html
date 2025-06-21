@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% block title %}Ayuda - Asistente Virtual Educativo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="text-center mb-5">
+            <h2 class="text-gradient fw-bold">
+                <i class="fas fa-question-circle me-2"></i>
+                Centro de Ayuda
+            </h2>
+            <p class="lead text-muted">
+                Aprende cómo usar EduBot IA para maximizar tu experiencia de aprendizaje
+            </p>
+        </div>
+
+        <!-- Quick Start Guide -->
+        <div class="card mb-5">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-rocket me-2"></i>
+                    Guía de Inicio Rápido
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-md-4 text-center">
+                        <div class="mb-3">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                1
+                            </div>
+                        </div>
+                        <h5 class="fw-bold">Accede al Chat</h5>
+                        <p class="text-muted">
+                            Ve a la sección de Chat desde el menú principal para comenzar a interactuar con el asistente.
+                        </p>
+                    </div>
+                    
+                    <div class="col-md-4 text-center">
+                        <div class="mb-3">
+                            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                2
+                            </div>
+                        </div>
+                        <h5 class="fw-bold">Haz tu Pregunta</h5>
+                        <p class="text-muted">
+                            Escribe tu consulta académica de forma natural, como si le preguntaras a un profesor.
+                        </p>
+                    </div>
+                    
+                    <div class="col-md-4 text-center">
+                        <div class="mb-3">
+                            <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                3
+                            </div>
+                        </div>
+                        <h5 class="fw-bold">Recibe Ayuda</h5>
+                        <p class="text-muted">
+                            Obtén respuestas detalladas, ejemplos y sugerencias para profundizar en el tema.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="card mb-5">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-question me-2"></i>
+                    Preguntas Frecuentes
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                ¿Qué materias puede ayudarme a estudiar?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                EduBot IA puede ayudarte con las siguientes materias de nivel secundario:
+                                <ul class="mt-2">
+                                    <li><strong>Matemáticas:</strong> Álgebra, geometría, cálculo, trigonometría</li>
+                                    <li><strong>Física:</strong> Mecánica, energía, ondas, electricidad</li>
+                                    <li><strong>Química:</strong> Elementos, enlaces, reacciones químicas</li>
+                                    <li><strong>Biología:</strong> Células, genética, ecosistemas</li>
+                                    <li><strong>Historia:</strong> Civilizaciones, revoluciones, períodos históricos</li>
+                                    <li><strong>Geografía:</strong> Coordenadas, relieve, clima</li>
+                                    <li><strong>Lengua:</strong> Gramática, sintaxis, literatura</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                ¿Cómo debo formular mis preguntas?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Para obtener las mejores respuestas, sigue estos consejos:
+                                <ul class="mt-2">
+                                    <li><strong>Sé específico:</strong> "¿Cómo resolver ecuaciones cuadráticas?" es mejor que "ayuda con matemáticas"</li>
+                                    <li><strong>Usa lenguaje natural:</strong> Pregunta como si hablaras con un profesor</li>
+                                    <li><strong>Incluye contexto:</strong> Menciona si necesitas ejemplos, definiciones o procedimientos</li>
+                                    <li><strong>Una pregunta a la vez:</strong> Es mejor hacer preguntas separadas para temas diferentes</li>
+                                </ul>
+                                <div class="alert alert-info mt-3">
+                                    <strong>Ejemplos de buenas preguntas:</strong><br>
+                                    • "¿Qué es el teorema de Pitágoras y cómo se aplica?"<br>
+                                    • "¿Puedes explicarme las leyes de Newton con ejemplos?"<br>
+                                    • "¿Cómo funciona la fotosíntesis paso a paso?"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                ¿Qué significan los indicadores de confianza?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Los indicadores de confianza te muestran qué tan seguro está el sistema de su respuesta:
+                                <ul class="mt-2">
+                                    <li><span class="badge bg-success me-2">Alta</span> La respuesta es muy precisa y confiable</li>
+                                    <li><span class="badge bg-warning me-2">Media</span> La respuesta es buena pero podrías necesitar información adicional</li>
+                                    <li><span class="badge bg-danger me-2">Baja</span> La respuesta es tentativa, considera reformular tu pregunta</li>
+                                </ul>
+                                <div class="alert alert-warning mt-3">
+                                    <strong>Consejo:</strong> Si obtienes una confianza baja, intenta ser más específico en tu pregunta o usar términos diferentes.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                ¿Cómo puedo dar feedback sobre las respuestas?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Tu feedback es muy importante para mejorar el sistema:
+                                <ul class="mt-2">
+                                    <li>Después de cada respuesta, verás botones de 👍 (útil) y 👎 (no útil)</li>
+                                    <li>Haz clic en el botón correspondiente según tu experiencia</li>
+                                    <li>Tu feedback ayuda a entrenar el sistema para dar mejores respuestas</li>
+                                    <li>También puedes hacer preguntas de seguimiento si necesitas más claridad</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                ¿Puedo ver mi historial de conversaciones?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Sí, puedes acceder a tu historial de varias formas:
+                                <ul class="mt-2">
+                                    <li>En el chat, haz clic en el botón "Historial" para ver tus conversaciones de la sesión actual</li>
+                                    <li>El historial incluye todas las preguntas y respuestas de tu sesión</li>
+                                    <li>También puedes ver estadísticas como tiempo de sesión y materias cubiertas</li>
+                                </ul>
+                                <div class="alert alert-info mt-3">
+                                    <strong>Nota:</strong> El historial se mantiene durante tu sesión actual. Para conservar información importante, te recomendamos tomar notas.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="card mb-5">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    Consejos para Estudiar Mejor
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-target text-primary" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="fw-bold">Sé Específico</h6>
+                                <p class="text-muted mb-0">
+                                    Haz preguntas específicas sobre conceptos particulares en lugar de preguntas muy generales.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-redo text-success" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="fw-bold">Practica Regularmente</h6>
+                                <p class="text-muted mb-0">
+                                    Usa el asistente regularmente para reforzar conceptos y resolver dudas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-comments text-warning" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="fw-bold">Haz Preguntas de Seguimiento</h6>
+                                <p class="text-muted mb-0">
+                                    Si algo no queda claro, no dudes en pedir más ejemplos o explicaciones.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-book-open text-info" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="fw-bold">Explora la Base de Conocimiento</h6>
+                                <p class="text-muted mb-0">
+                                    Revisa los temas disponibles para descubrir nuevos conceptos que estudiar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-envelope me-2"></i>
+                    ¿Necesitas Más Ayuda?
+                </h4>
+            </div>
+            <div class="card-body text-center">
+                <p class="mb-4">
+                    Si tienes problemas técnicos o sugerencias para mejorar EduBot IA, 
+                    no dudes en contactarnos.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{ url_for('chat') }}" class="btn btn-primary">
+                        <i class="fas fa-comments me-1"></i>
+                        Ir al Chat
+                    </a>
+                    <a href="{{ url_for('knowledge_view') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-book me-1"></i>
+                        Explorar Conocimiento
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

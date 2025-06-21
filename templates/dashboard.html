@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Asistente Virtual Educativo{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stat-card {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 300px;
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+    }
+    
+    .progress-custom {
+        height: 8px;
+        border-radius: 4px;
+        background-color: var(--light-bg);
+    }
+    
+    .progress-bar-custom {
+        border-radius: 4px;
+        transition: width 0.6s ease;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-gradient fw-bold">
+                <i class="fas fa-chart-bar me-2"></i>
+                Dashboard de Estadísticas
+            </h2>
+            <button class="btn btn-outline-primary" onclick="refreshStats()">
+                <i class="fas fa-sync-alt me-1"></i>
+                Actualizar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row g-4 mb-5">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-number">{{ stats.total_questions }}</div>
+            <div class="stat-label">
+                <i class="fas fa-question-circle me-1"></i>
+                Total Preguntas
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, var(--success-color), #059669);">
+            <div class="stat-number">{{ stats.active_sessions }}</div>
+            <div class="stat-label">
+                <i class="fas fa-users me-1"></i>
+                Sesiones Activas
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, var(--warning-color), #d97706);">
+            <div class="stat-number">{{ stats.average_session_time_minutes }}</div>
+            <div class="stat-label">
+                <i class="fas fa-clock me-1"></i>
+                Tiempo Promedio (min)
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, var(--danger-color), #dc2626);">
+            <div class="stat-number">{{ (stats.average_confidence * 100)|round }}%</div>
+            <div class="stat-label">
+                <i class="fas fa-chart-line me-1"></i>
+                Confianza Promedio
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row g-4 mb-5">
+    <!-- Subjects Distribution -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-book me-2"></i>
+                    Distribución por Materias
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if stats.subjects_distribution %}
+                    {% for subject, count in stats.subjects_distribution.items() %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="fw-medium">{{ subject.title() }}</span>
+                            <span class="text-muted">{{ count }} preguntas</span>
+                        </div>
+                        <div class="progress-custom">
+                            <div class="progress-bar-custom bg-primary" 
+                                 style="width: {{ (count / stats.total_questions * 100)|round }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-chart-pie" style="font-size: 3rem; opacity: 0.3;"></i>
+                        <p class="mt-3">No hay datos de materias aún</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Weekly Usage -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-calendar-week me-2"></i>
+                    Uso de la Última Semana
+                </h5>
+            </div>
+            <div class="card-body">
+                <canvas id="weeklyChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Stats -->
+<div class="row g-4">
+    <!-- Top Subject -->
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="fas fa-trophy text-warning" style="font-size: 2.5rem;"></i>
+                </div>
+                <h5 class="fw-bold">Materia Más Popular</h5>
+                <p class="text-muted mb-0">{{ stats.top_subject.title() if stats.top_subject != 'N/A' else 'Sin datos' }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Feedback Stats -->
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="fas fa-thumbs-up text-success" style="font-size: 2.5rem;"></i>
+                </div>
+                <h5 class="fw-bold">Feedback Promedio</h5>
+                <p class="text-muted mb-0">{{ stats.average_feedback }}/5.0 ({{ stats.total_feedback_count }} evaluaciones)</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- System Status -->
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="mb-3">
+                    <i class="fas fa-server text-info" style="font-size: 2.5rem;"></i>
+                </div>
+                <h5 class="fw-bold">Estado del Sistema</h5>
+                <p class="text-success mb-0">
+                    <i class="fas fa-check-circle me-1"></i>
+                    Operativo
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detailed Analytics -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-analytics me-2"></i>
+                    Análisis Detallado
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold mb-3">Resumen de Actividad</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-circle text-primary me-2" style="font-size: 0.5rem;"></i>
+                                <strong>Total de preguntas procesadas:</strong> {{ stats.total_questions }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>
+                                <strong>Sesiones activas:</strong> {{ stats.active_sessions }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-circle text-warning me-2" style="font-size: 0.5rem;"></i>
+                                <strong>Tiempo promedio por sesión:</strong> {{ stats.average_session_time_minutes }} minutos
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-circle text-info me-2" style="font-size: 0.5rem;"></i>
+                                <strong>Nivel de confianza promedio:</strong> {{ (stats.average_confidence * 100)|round }}%
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6 class="fw-bold mb-3">Métricas de Calidad</h6>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Satisfacción del Usuario</span>
+                                <span>{{ (stats.average_feedback / 5 * 100)|round }}%</span>
+                            </div>
+                            <div class="progress-custom">
+                                <div class="progress-bar-custom bg-success" 
+                                     style="width: {{ (stats.average_feedback / 5 * 100)|round }}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Precisión de Respuestas</span>
+                                <span>{{ (stats.average_confidence * 100)|round }}%</span>
+                            </div>
+                            <div class="progress-custom">
+                                <div class="progress-bar-custom bg-info" 
+                                     style="width: {{ (stats.average_confidence * 100)|round }}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Cobertura de Materias</span>
+                                <span>{{ (stats.subjects_distribution|length / 7 * 100)|round }}%</span>
+                            </div>
+                            <div class="progress-custom">
+                                <div class="progress-bar-custom bg-warning" 
+                                     style="width: {{ (stats.subjects_distribution|length / 7 * 100)|round }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Weekly Usage Chart
+const weeklyData = {{ stats.last_week_usage|tojsonfilter }};
+const dates = Object.keys(weeklyData).reverse();
+const values = dates.map(date => weeklyData[date]);
+
+const ctx = document.getElementById('weeklyChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: dates.map(date => {
+            const d = new Date(date);
+            return d.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
+        }),
+        datasets: [{
+            label: 'Preguntas por día',
+            data: values,
+            borderColor: 'rgb(79, 70, 229)',
+            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: 'rgb(79, 70, 229)',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointRadius: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                },
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.1)'
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        },
+        elements: {
+            point: {
+                hoverRadius: 8
+            }
+        }
+    }
+});
+
+function refreshStats() {
+    location.reload();
+}
+
+// Auto-refresh every 5 minutes
+setInterval(refreshStats, 300000);
+</script>
+{% endblock %}
