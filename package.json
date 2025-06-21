@@ -1,0 +1,12 @@
+{
+  "name": "educational-virtual-assistant",
+  "version": "0.0.0",
+  "description": "Educational Virtual Assistant with Flask backend",
+  "scripts": {
+    "dev": "python app.py",
+    "start": "python app.py"
+  },
+  "keywords": ["flask", "education", "virtual-assistant"],
+  "author": "",
+  "license": "ISC"
+}
